@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#000000">
+  <title>iPhone-Webcam – Sender</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="send">
+  <video id="preview" autoplay playsinline muted disablepictureinpicture></video>
+
+  <div class="status">
+    <span><span id="dotServer" class="dot"></span><span id="txtServer">Server: –</span></span>
+    <span><span id="dotPeers" class="dot"></span><span id="txtPeers">Empfänger: 0</span></span>
+    <span id="txtVideo"></span>
+  </div>
+  <div id="banner" class="banner" hidden></div>
+
+  <div class="controls">
+    <div class="row">
+      <div class="seg" role="group" aria-label="Kamera">
+        <button data-facing="environment" aria-pressed="true">Rückkamera</button>
+        <button data-facing="user" aria-pressed="false">Frontkamera</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="seg" role="group" aria-label="Auflösung">
+        <button data-res="1080" aria-pressed="true">1080p · 30 fps</button>
+        <button data-res="720" aria-pressed="false">720p · 30 fps</button>
+      </div>
+    </div>
+    <button id="startStop">Start</button>
+  </div>
+
+  <script src="/common.js"></script>
+  <script src="/send.js"></script>
+</body>
+</html>

@@ -20,7 +20,13 @@ export default {
       if (!ROOM_RE.test(room) || (role !== 'sender' && role !== 'viewer')) {
         return new Response('Ungültiger Raum oder Rolle', { status: 400 });
       }
-      if (request.headers.get('Upgrade') !== 'websocket') {
+      if ((request.headers.get('Upgrade') || '').toLowerCase() !== 'websocket') {
+        console.log('kein WebSocket-Upgrade', JSON.stringify({
+          upgrade: request.headers.get('Upgrade'),
+          connection: request.headers.get('Connection'),
+          proto: request.cf?.httpProtocol,
+          ua: request.headers.get('User-Agent'),
+        }));
         return new Response('WebSocket erwartet', { status: 426 });
       }
       // nur Seiten von dieser Domain dürfen sich verbinden

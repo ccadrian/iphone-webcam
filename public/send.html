@@ -4,8 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
   <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Webcam">
   <meta name="theme-color" content="#000000">
-  <title>iPhone-Webcam – Sender</title>
+  <meta name="robots" content="noindex">
+  <title>iPhone-Webcam – Kamera</title>
   <link rel="stylesheet" href="/style.css">
 </head>
 <body class="send">
@@ -13,23 +15,29 @@
 
   <div class="status">
     <span><span id="dotServer" class="dot"></span><span id="txtServer">Server: –</span></span>
-    <span><span id="dotPeers" class="dot"></span><span id="txtPeers">Empfänger: 0</span></span>
+    <span><span id="dotPeers" class="dot"></span><span id="txtPeers">PC: 0</span></span>
     <span id="txtVideo"></span>
   </div>
   <div id="banner" class="banner" hidden></div>
 
+  <div id="noRoom" class="noroom" hidden>
+    <h1>iPhone-Webcam</h1>
+    <p>Öffne am PC <b id="siteHost">webcam.schlitt.co</b> und scanne den QR-Code mit der iPhone-Kamera.</p>
+  </div>
+
   <div class="controls">
-    <div class="row">
-      <div class="seg" role="group" aria-label="Kamera">
-        <button data-facing="environment" aria-pressed="true">Rückkamera</button>
-        <button data-facing="user" aria-pressed="false">Frontkamera</button>
-      </div>
+    <div class="seg" role="group" aria-label="Kamera">
+      <button data-key="facing" data-val="environment" aria-pressed="true">Rück</button>
+      <button data-key="facing" data-val="user" aria-pressed="false">Front</button>
     </div>
-    <div class="row">
-      <div class="seg" role="group" aria-label="Auflösung">
-        <button data-res="1080" aria-pressed="true">1080p · 30 fps</button>
-        <button data-res="720" aria-pressed="false">720p · 30 fps</button>
-      </div>
+    <div class="seg" role="group" aria-label="Auflösung">
+      <button data-key="res" data-val="2160" aria-pressed="false">4K</button>
+      <button data-key="res" data-val="1080" aria-pressed="true">1080p</button>
+      <button data-key="res" data-val="720" aria-pressed="false">720p</button>
+    </div>
+    <div class="seg" role="group" aria-label="Priorität">
+      <button data-key="prio" data-val="quality" aria-pressed="true">Schärfe</button>
+      <button data-key="prio" data-val="smooth" aria-pressed="false">Flüssig</button>
     </div>
     <button id="startStop">Start</button>
   </div>

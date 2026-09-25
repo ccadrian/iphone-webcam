@@ -1,0 +1,57 @@
+name: Test & Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: End-to-End-Test (wrangler dev + Chrome mit simulierter Kamera)
+        run: npm test
+        env:
+          CHROMIUM_PATH: /usr/bin/google-chrome
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      TURN_KEY_ID: ${{ secrets.TURN_KEY_ID }}
+      TURN_KEY_API_TOKEN: ${{ secrets.TURN_KEY_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Deploy nach Cloudflare (webcam.schlitt.co)
+        run: npx wrangler deploy
+      - name: TURN-Zugangsdaten setzen (falls als GitHub-Secret hinterlegt)
+        if: ${{ env.TURN_KEY_ID != '' }}
+        run: |
+          printf '%s' "$TURN_KEY_ID" | npx wrangler secret put TURN_KEY_ID
+          printf '%s' "$TURN_KEY_API_TOKEN" | npx wrangler secret put TURN_KEY_API_TOKEN
+      - name: Erreichbarkeit prüfen
+        run: |
+          for i in 1 2 3 4 5 6; do
+            curl -fsS https://webcam.schlitt.co/api/health && exit 0
+            sleep 10
+          done
+          echo "webcam.schlitt.co antwortet noch nicht (DNS/Zertifikat kann beim ersten Mal einige Minuten brauchen)"

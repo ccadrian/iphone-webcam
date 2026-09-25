@@ -1,0 +1,6 @@
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  Permissions-Policy: camera=(self), microphone=(), geolocation=()
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' wss://webcam.schlitt.co ws://localhost:* ws://127.0.0.1:*; media-src 'self' blob:; frame-ancestors 'none'; base-uri 'none'; form-action 'none'
+  Cross-Origin-Opener-Policy: same-origin

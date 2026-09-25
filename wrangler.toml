@@ -1,0 +1,28 @@
+name = "iphone-webcam"
+main = "worker/index.js"
+compatibility_date = "2025-09-01"
+
+# Eigene Subdomain; Cloudflare legt den DNS-Eintrag beim Deploy selbst an.
+routes = [{ pattern = "webcam.schlitt.co", custom_domain = true }]
+preview_urls = false
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+html_handling = "auto-trailing-slash"
+not_found_handling = "404-page"
+
+[[durable_objects.bindings]]
+name = "ROOMS"
+class_name = "Room"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Room"]
+
+[observability]
+enabled = true
+
+# Optionale Secrets (wrangler secret put ...):
+#   TURN_KEY_ID, TURN_KEY_API_TOKEN  -> Cloudflare Realtime TURN
+#   ICE_SERVERS_JSON                 -> alternativ eigene STUN/TURN-Server als JSON

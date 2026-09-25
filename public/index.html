@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="iPhone-Kamera ohne App als Webcam am PC – per Safari und WebRTC.">
+  <title>iPhone-Webcam</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="dash">
+  <header class="top">
+    <h1>iPhone-Webcam</h1>
+    <span id="phoneState" class="chip"><span class="dot"></span><span>iPhone: offline</span></span>
+  </header>
+
+  <!-- Ansicht am iPhone -->
+  <main id="mobile" class="mobile" hidden>
+    <section class="card">
+      <h2>Am PC öffnen</h2>
+      <p>Öffne <b class="host"></b> am PC. Dort erscheint ein QR-Code, den du mit der iPhone-Kamera scannst.</p>
+      <a id="resume" class="button primary" hidden>Mit dem zuletzt gekoppelten PC weitermachen</a>
+    </section>
+  </main>
+
+  <!-- Ansicht am PC -->
+  <main id="desktop" class="grid" hidden>
+    <section class="card preview-card">
+      <div class="preview">
+        <video id="preview" autoplay playsinline muted disablepictureinpicture></video>
+        <div id="previewHint" class="preview-hint">Warte auf iPhone …</div>
+      </div>
+      <div class="row between">
+        <span id="stats" class="muted mono"></span>
+        <label class="toggle"><input type="checkbox" id="previewOn" checked> Vorschau</label>
+      </div>
+      <p class="muted small">Tipp: Läuft OBS, die Vorschau ausschalten – jedes Vorschaufenster kostet das iPhone zusätzlich Rechenleistung.</p>
+    </section>
+
+    <div class="side">
+    <section class="card">
+      <h2><span class="step">1</span> iPhone koppeln</h2>
+      <p>QR-Code mit der iPhone-Kamera scannen, in Safari öffnen, <b>Start</b> tippen.</p>
+      <div id="qr" class="qr"></div>
+      <p class="small"><a id="sendLink" target="_blank" rel="noopener"></a></p>
+    </section>
+
+    <section class="card">
+      <h2><span class="step">2</span> In OBS einbinden</h2>
+      <p>OBS → Quellen → <b>+ Browser</b> → diese URL, Breite <b>1920</b>, Höhe <b>1080</b>:</p>
+      <div class="copy">
+        <input id="viewUrl" readonly aria-label="URL für OBS">
+        <button id="copyView" class="button">Kopieren</button>
+      </div>
+      <p>Dann in OBS rechts unten <b>„Virtuelle Kamera starten“</b>. In Zoom, Teams, Discord und im Browser als Kamera <b>„OBS Virtual Camera“</b> wählen.</p>
+      <p class="small"><a id="openView" target="_blank" rel="noopener">Empfänger im neuen Tab öffnen</a></p>
+      <details>
+        <summary>OBS-Einstellungen im Detail</summary>
+        <ul>
+          <li>Einstellungen → Video: Basis- und Ausgabeauflösung <b>1920×1080</b>, FPS <b>30</b> (bei 4K am iPhone Basis 3840×2160 möglich).</li>
+          <li>Browserquelle: <b>Benutzerdefinierte Bildrate</b> an, 30. <b>„Quelle herunterfahren, wenn nicht sichtbar“</b> aus.</li>
+          <li>Quelle markieren → <b>Strg+F</b> (an Bildschirm anpassen).</li>
+          <li>Wichtig für die Schärfe: Breite/Höhe der Browserquelle muss zur Auflösung passen – der Standard 800×600 macht das Bild matschig.</li>
+          <li>Zoom: Einstellungen → Video → <b>HD</b> aktivieren, sonst sendet Zoom nur niedrige Auflösung.</li>
+          <li>Optionen an der URL: <code>?fit=cover</code> vor dem # füllt das Bild randlos, <code>?debug=1</code> zeigt Statistiken.</li>
+        </ul>
+      </details>
+    </section>
+
+    <section class="card">
+      <h2>Kopplung</h2>
+      <p class="small muted">Der Code in den Links ist der Schlüssel zu deiner Kamera. Wer ihn kennt, kann zuschauen. Nicht weitergeben.</p>
+      <button id="newRoom" class="button danger">Neuen Code erzeugen</button>
+      <p class="small muted">Danach iPhone neu koppeln und die URL in OBS ersetzen.</p>
+    </section>
+    </div>
+  </main>
+
+  <script src="/vendor/qrcode.js"></script>
+  <script src="/common.js"></script>
+  <script src="/viewer.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
